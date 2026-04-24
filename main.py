@@ -6,7 +6,6 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain.chains.qa_with_sources.retrieval import RetrievalQAWithSourcesChain
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import UnstructuredURLLoader
 from langchain_community.vectorstores import FAISS
@@ -241,17 +240,22 @@ def query_store(store: FAISS, question: str) -> dict | None:
         llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3, max_tokens=800)
         retriever = store.as_retriever(search_kwargs={"k": 4})
         docs = retriever.invoke(question)
-        
+
         context = "\n\n".join([d.page_content for d in docs])
-        sources = "\n".join(set([d.metadata.get("source", "") for d in docs if d.metadata.get("source")]))
-        
+        sources = "\n".join(set([
+            d.metadata.get("source", "")
+            for d in docs
+            if d.metadata.get("source")
+        ]))
+
         from langchain_core.messages import HumanMessage, SystemMessage
         messages = [
-            SystemMessage(content=f"Answer the question based on the context below. Be concise.\n\nContext:\n{context}"),
+            SystemMessage(content=f"Answer the question based only on the context below.\n\nContext:\n{context}"),
             HumanMessage(content=question)
         ]
         response = llm.invoke(messages)
         return {"answer": response.content, "sources": sources}
+
     except Exception as e:
         logger.exception("Query failed")
         st.error(f"Query failed: {e}")
