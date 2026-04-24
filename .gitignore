@@ -1,0 +1,21 @@
+# Environment
+.env
+
+# FAISS index (can be large)
+faiss_index/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS
+.DS_Store
+Thumbs.db
