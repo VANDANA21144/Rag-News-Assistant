@@ -1,4 +1,4 @@
-# NewsLens 🔬
+# NewsLens 
 
 An AI-powered news research tool built with LangChain, FAISS, and Streamlit. Paste up to 5 article URLs, build a local RAG index, and ask natural-language questions with source citations.
 
@@ -35,7 +35,7 @@ streamlit run main.py
 ## Usage
 
 1. Paste 1–5 article URLs into the sidebar
-2. Click **⚡ Process URLs** — this loads, chunks, embeds, and indexes the content
+2. Click ** Process URLs** — this loads, chunks, embeds, and indexes the content
 3. Type a question in the main input
 4. Get an answer with source citations
 
